@@ -251,55 +251,43 @@ export default function TokyoChatbot() {
           className={`tokyo-chat ${isFullscreen ? 'fullscreen' : ''}`}
           style={{
             position: 'fixed',
+            top: isFullscreen ? 0 : 'auto',
             bottom: isFullscreen ? 0 : 24,
+            left: isFullscreen ? 0 : 'auto',
             right: isFullscreen ? 0 : 24,
             width: isFullscreen ? '100vw' : 420,
             height: isFullscreen ? '100vh' : 600,
             maxHeight: isFullscreen ? '100vh' : 'calc(100vh - 48px)',
             background: 'var(--bg)',
-            border: '1px solid var(--border)',
-            borderRadius: isFullscreen ? 0 : 0,
-            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            border: isFullscreen ? 'none' : '1px solid var(--border)',
+            borderRadius: 0,
+            boxShadow: isFullscreen ? 'none' : '0 2px 12px rgba(0,0,0,0.06)',
             display: 'flex',
             flexDirection: 'column',
             zIndex: 1001,
             animation: 'slideUp 0.3s ease',
-            fontFamily: 'DM Sans, sans-serif',
+            fontFamily: 'var(--font-sans)',
           }}
         >
           {/* Header */}
           <div style={{
-            padding: '20px 24px',
+            padding: '16px 20px',
             borderBottom: '1px solid var(--border)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             background: 'var(--bg)',
+            flexShrink: 0,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: '20px' }}>💬</span>
-              <div>
-                <div style={{ 
-                  fontFamily: 'Lora, Georgia, serif',
-                  fontWeight: 400, 
-                  fontSize: '1.1rem',
-                  color: 'var(--text)',
-                  lineHeight: 1.2,
-                }}>
-                  Tokyo
-                </div>
-                <div style={{ 
-                  fontSize: '0.72rem', 
-                  color: 'var(--muted)',
-                  letterSpacing: '0.04em',
-                  fontFamily: 'DM Sans, sans-serif',
-                  fontWeight: 300,
-                }}>
-                  albin's unpaid intern
-                </div>
-              </div>
+            <div style={{ 
+              fontSize: '0.9rem',
+              color: 'var(--text)',
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 300,
+            }}>
+              tokyo
             </div>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
                 style={{
@@ -307,11 +295,12 @@ export default function TokyoChatbot() {
                   border: 'none',
                   cursor: 'pointer',
                   color: 'var(--muted)',
-                  fontSize: '0.82rem',
-                  fontFamily: 'DM Sans, sans-serif',
+                  fontSize: '0.72rem',
+                  fontFamily: 'var(--font-sans)',
                   fontWeight: 300,
-                  padding: '4px 8px',
+                  padding: 0,
                   transition: 'color 0.15s',
+                  textTransform: 'lowercase',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = 'var(--text)'
@@ -329,11 +318,12 @@ export default function TokyoChatbot() {
                   border: 'none',
                   cursor: 'pointer',
                   color: 'var(--muted)',
-                  fontSize: '0.82rem',
-                  fontFamily: 'DM Sans, sans-serif',
+                  fontSize: '0.72rem',
+                  fontFamily: 'var(--font-sans)',
                   fontWeight: 300,
-                  padding: '4px 8px',
+                  padding: 0,
                   transition: 'color 0.15s',
+                  textTransform: 'lowercase',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = 'var(--text)'
@@ -356,12 +346,13 @@ export default function TokyoChatbot() {
             {/* Tokyo Character - Only in fullscreen */}
             {isFullscreen && (
               <div style={{
-                width: 280,
+                width: 300,
                 borderRight: '1px solid var(--border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'var(--hover)',
+                background: 'var(--bg)',
+                flexShrink: 0,
               }}>
                 <TokyoCharacter
                   isThinking={loading}
@@ -375,10 +366,11 @@ export default function TokyoChatbot() {
             <div style={{
               flex: 1,
               overflowY: 'auto',
-              padding: '20px',
+              padding: isFullscreen ? '24px' : '20px',
               display: 'flex',
               flexDirection: 'column',
-              gap: 16,
+              gap: 20,
+              minHeight: 0,
             }}>
             {messages.map((msg) => (
               <div
@@ -392,18 +384,19 @@ export default function TokyoChatbot() {
               >
                 <div
                   style={{
-                    maxWidth: '80%',
-                    padding: '14px 18px',
+                    maxWidth: '75%',
+                    padding: '12px 16px',
                     borderRadius: 0,
                     background: msg.role === 'user'
                       ? 'var(--text)'
-                      : 'var(--hover)',
+                      : 'transparent',
                     color: msg.role === 'user' ? 'var(--bg)' : 'var(--text)',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     lineHeight: 1.7,
                     whiteSpace: 'pre-wrap',
-                    fontFamily: 'DM Sans, sans-serif',
+                    fontFamily: 'var(--font-sans)',
                     fontWeight: 300,
+                    borderBottom: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
                   }}
                 >
                   {msg.content}
@@ -412,10 +405,11 @@ export default function TokyoChatbot() {
                   <div style={{
                     fontSize: '0.72rem',
                     color: 'var(--muted)',
-                    marginTop: 6,
-                    fontFamily: 'DM Sans, sans-serif',
+                    marginTop: 8,
+                    fontFamily: 'var(--font-sans)',
                     fontWeight: 300,
                     letterSpacing: '0.02em',
+                    textTransform: 'lowercase',
                   }}>
                     sources: {msg.sources.map(s => s.title).join(', ')}
                   </div>
@@ -428,11 +422,12 @@ export default function TokyoChatbot() {
                 alignItems: 'center',
                 gap: 8,
                 color: 'var(--muted)',
-                fontSize: '0.9rem',
-                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '0.82rem',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 300,
+                textTransform: 'lowercase',
               }}>
-                <span>tokyo is thinking</span>
+                <span>thinking</span>
                 <span style={{ animation: 'dots 1.5s infinite' }}>...</span>
               </div>
             )}
@@ -442,11 +437,13 @@ export default function TokyoChatbot() {
 
           {/* Input */}
           <div style={{
-            padding: '20px 24px',
+            padding: isFullscreen ? '20px 24px' : '16px 20px',
             borderTop: '1px solid var(--border)',
             display: 'flex',
             gap: 12,
+            alignItems: 'flex-end',
             background: 'var(--bg)',
+            flexShrink: 0,
           }}>
             <input
               ref={inputRef}
@@ -454,20 +451,21 @@ export default function TokyoChatbot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="ask tokyo anything about albin or the blogs..."
+              placeholder="ask tokyo anything..."
               disabled={loading}
               style={{
                 flex: 1,
-                padding: '10px 0',
+                padding: '8px 0',
                 border: 'none',
                 borderBottom: '1px solid var(--border)',
-                fontSize: '0.95rem',
-                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '0.9rem',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 300,
                 background: 'transparent',
                 color: 'var(--text)',
                 outline: 'none',
                 transition: 'border-color 0.2s',
+                lineHeight: 1.5,
               }}
               onFocus={(e) => {
                 e.target.style.borderBottomColor = 'var(--text)'
@@ -480,7 +478,7 @@ export default function TokyoChatbot() {
               onClick={handleSend}
               disabled={loading || !input.trim()}
               style={{
-                padding: '10px 24px',
+                padding: '8px 20px',
                 background: loading || !input.trim()
                   ? 'transparent'
                   : 'var(--text)',
@@ -490,11 +488,13 @@ export default function TokyoChatbot() {
                 border: 'none',
                 borderRadius: 0,
                 cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-                fontSize: '0.88rem',
-                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '0.82rem',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 300,
                 transition: 'all 0.15s',
                 opacity: loading || !input.trim() ? 0.5 : 1,
+                textTransform: 'lowercase',
+                whiteSpace: 'nowrap',
               }}
             >
               send →
